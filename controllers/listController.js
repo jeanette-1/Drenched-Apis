@@ -114,12 +114,12 @@ const createList = async (req, res) => {
 const getList = async (req, res) => {
   try {
     const { categoryId } = req.params;
-    const findId = await List.findOne({ categoryId: categoryId });
-    if (!findId) {
-      throw new Error("Item not found");
-    }
+    // const findId = await List.findOne({ categoryId: categoryId });
+    // if (!findId) {
+    //   sendSuccess(res, "", []);
+    // }
     const findList = await List.find({ categoryId: categoryId });
-    console.log(findList);  
+    console.log(findList);
     sendSuccess(res, "", findList);
   } catch (e) {
     sendError(res, 500, e.message);
