@@ -114,7 +114,7 @@ const createList = async (req, res) => {
 const getList = async (req, res) => {
   try {
     const { categoryId } = req?.params;
-    console.log({ obj });
+
     const findList = await List.find({ categoryId: categoryId });
     console.log(findList);
     sendSuccess(res, "", findList);
@@ -131,7 +131,6 @@ const getAllList = async (req, res) => {
   } catch (e) {
     sendError(res, 500, e.message);
   }
-  
 };
 
 //user
@@ -215,4 +214,11 @@ const updateList = async (req, res) => {
   }
 };
 
-module.exports = { createList, getList, getDetails, deleteList, updateList,getAllList };
+module.exports = {
+  createList,
+  getList,
+  getDetails,
+  deleteList,
+  updateList,
+  getAllList,
+};
