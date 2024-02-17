@@ -4,6 +4,8 @@ const app = express();
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const helmet = require("helmet");
 const PORT = process.env.PORT || 8080;
 const authRouter = require("./routes/auth");
@@ -24,6 +26,8 @@ mongoose
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+app.use(cors());
+
 
 //routes
 
