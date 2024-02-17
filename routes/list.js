@@ -4,12 +4,16 @@ const {
   getList,
   getDetails,
   deleteList,
-  updateList
+  updateList,
+  getAllList
+
 } = require("../controllers/listController");
 const isAdmin = require("../middleware/validateAdmin");
 const validateToken = require("../middleware/validateTokenHandler");
 router.route("/create").post(validateToken, isAdmin, createList);
 router.route("/getList/:categoryId").get(validateToken, getList);
+router.route("/getAllList").get(validateToken, getAllList);
+
 router.route("/getDetails/:id").get(validateToken, getDetails);
 router.route("/deleteList/:id").delete(validateToken, isAdmin, deleteList);
 router.route("/updateList/:id").put(validateToken, isAdmin, updateList);

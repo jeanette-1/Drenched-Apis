@@ -113,11 +113,8 @@ const createList = async (req, res) => {
 
 const getList = async (req, res) => {
   try {
-    const { categoryId } = req.params;
-    // const findId = await List.findOne({ categoryId: categoryId });
-    // if (!findId) {
-    //   sendSuccess(res, "", []);
-    // }
+    const { categoryId } = req?.params;
+    console.log({ obj });
     const findList = await List.find({ categoryId: categoryId });
     console.log(findList);
     sendSuccess(res, "", findList);
@@ -125,6 +122,16 @@ const getList = async (req, res) => {
     sendError(res, 500, e.message);
   }
   // /getList/:categoryId
+};
+const getAllList = async (req, res) => {
+  try {
+    const findList = await List.find();
+    console.log(findList);
+    sendSuccess(res, "", findList);
+  } catch (e) {
+    sendError(res, 500, e.message);
+  }
+  
 };
 
 //user
@@ -208,4 +215,4 @@ const updateList = async (req, res) => {
   }
 };
 
-module.exports = { createList, getList, getDetails, deleteList, updateList };
+module.exports = { createList, getList, getDetails, deleteList, updateList,getAllList };
