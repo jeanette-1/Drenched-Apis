@@ -1,5 +1,7 @@
 const { sendSuccess, sendError } = require("../middleware/ErrorHandling");
 const Favorite = require("../models/Favorite");
+const Category = require("../models/Category");
+
 const List = require("../models/List");
 
 const addToFavorite = async (req, res) => {
@@ -13,6 +15,10 @@ const addToFavorite = async (req, res) => {
       _id: id,
     });
     console.log(findPost);
+    const findCategoryName = await Category.findOne({
+      categoryId: findPost.categoryId,
+    });
+    console.log({ findCategoryName });
     const favoriteData = new Favorite({
       userId: req.user._id,
       name: findPost.name,
@@ -21,6 +27,7 @@ const addToFavorite = async (req, res) => {
       categoryId: findPost.categoryId,
       audio: findPost.audio,
       postId: id,
+      categoryName: findCategoryName.name,
     });
 
     console.log({ favoriteData });

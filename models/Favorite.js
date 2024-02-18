@@ -27,5 +27,8 @@ const FavoriteSchema = new mongoose.Schema({
   audio: {
     type: String,
   },
+  categoryName: {
+    type: String,
+  },
 });
 module.exports = mongoose.model("Favorite", FavoriteSchema);
