@@ -2,6 +2,27 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendError, sendSuccess } = require("../middleware/ErrorHandling");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+// Configure Cloudinary with your credentials
+
+cloudinary.config({
+  cloud_name: "dxkkg0gih",
+  api_key: "552665994149277",
+  api_secret: "MlFNewU9pDODPTMf1fzgZmsI4ds",
+});
+// Set up multer storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "drenched",
+    allowed_formats: ["jpg", "jpeg", "png"],
+  },
+});
+const parser = multer({ storage: storage });
+
 const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -83,5 +104,41 @@ const changePassowrd = async (req, res) => {
     sendError(res, 500, e.message);
   }
 };
+const updateProfile = async (req, res) => {
+  console.log({ req: req.body });
+  try {
+    parser.single("image")(req, res, async (err) => {
+      if (err) {
+        res.status(400).json({ status: false, message: "Image upload failed" });
+        return;
+      }
 
-module.exports = { register, login, changePassowrd };
+      // If image upload succeeded, proceed to create the category
+
+      const imageUrl = req.file ? req.file.path : ""; // Get the Cloudinary URL of the uploaded image
+
+      const { _id } = req.user;
+      console.log({ _id });
+
+      await User.findByIdAndUpdate(
+        { _id: _id },
+        {
+          $set: {
+            image: imageUrl,
+          },
+        }
+      );
+
+      res
+        .status(200)
+        .json({ status: true, message: "User profile updated successfully" });
+    });
+  } catch (e) {
+    res.status(500).json({
+      status: false,
+      message: e.message,
+    });
+  }
+};
+
+module.exports = { register, login, changePassowrd,updateProfile };
